@@ -4,6 +4,9 @@
 ![Dynamic XML Badge](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fraw.githubusercontent.com%2FWashingtonwei%2Fhogwarts-artifacts-online%2Fmain%2Fpom.xml&query=%2F*%5Blocal-name()%3D'project'%5D%2F*%5Blocal-name()%3D'properties'%5D%2F*%5Blocal-name()%3D'java.version'%5D&label=Java) ![Dynamic XML Badge](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fraw.githubusercontent.com%2FWashingtonwei%2Fhogwarts-artifacts-online%2Fmain%2Fpom.xml&query=%2F*%5Blocal-name()%3D'project'%5D%2F*%5Blocal-name()%3D'parent'%5D%2F*%5Blocal-name()%3D'version'%5D&label=Spring%20Boot) ![Dynamic XML Badge](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fraw.githubusercontent.com%2FWashingtonwei%2Fhogwarts-artifacts-online%2Fmain%2Fpom.xml&query=%2F*%5Blocal-name()%3D'project'%5D%2F*%5Blocal-name()%3D'properties'%5D%2F*%5Blocal-name()%3D'spring-cloud-azure.version'%5D&label=Spring%20Cloud%20Azure)
 ## https://www.youtube.com/watch?v=ClyrdJMCE8o&t=6s
 
+## SwaggerHub API Documentation
+## https://app.swaggerhub.com/apis/Washingtonwei/hogwarts-openapi/1.0.0
+
 
 Welcome to *Hogwarts Artifacts Online*, a sample back-end application designed to demonstrate typical use cases and best
 practices in Spring Boot development. I wrote this sample application **line-by-line from scratch** in my YouTube course
