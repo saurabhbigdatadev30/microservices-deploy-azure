@@ -60,6 +60,7 @@ Additionally, my course emphasizes good software engineering practices, such as:
 🔗 [The mind map of the Hogwarts Artifacts Online user stories](https://xmind.app/m/999Pse)
 
 ### API Documentation
+https://app.swaggerhub.com/apis-docs/Washingtonwei/hogwarts-openapi/1.0.0?view=uiDocs#/artifact/findAllArtifacts
 
 🔗 [Hogwarts Artifacts Online API Documentation](https://app.swaggerhub.com/apis/Washingtonwei/hogwarts-openapi)
 

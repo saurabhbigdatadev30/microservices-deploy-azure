@@ -24,6 +24,7 @@ public class ArtifactToArtifactDtoConverter implements Converter<Artifact, Artif
                                                     source.getOwner() != null
                                                             ? this.wizardToWizardDtoConverter.convert(source.getOwner())
                                                             : null);
+        System.out.println("Converting Artifact to ArtifactDto: " + artifactDto);
         return artifactDto;
     }
 
