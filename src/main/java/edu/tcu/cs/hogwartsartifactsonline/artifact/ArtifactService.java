@@ -14,7 +14,7 @@ public class ArtifactService {
 
     private final IdWorker idWorker;
 
-
+// Constructor injection is preferred over field injection for better testability and immutability.
     public ArtifactService(ArtifactRepository artifactRepository, IdWorker idWorker) {
         this.artifactRepository = artifactRepository;
         this.idWorker = idWorker;

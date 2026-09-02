@@ -9,7 +9,9 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/v1/artifacts")
@@ -28,12 +30,27 @@ public class ArtifactController {
         this.artifactDtoToArtifactConverter = artifactDtoToArtifactConverter;
     }
 
-    @GetMapping("/{artifactId}")
+   /**
+      @GetMapping("/{artifactId}")
     public Result findArtifactById(@PathVariable String artifactId){
         Artifact foundArtifact = this.artifactService.findById(artifactId);
         ArtifactDto artifactDto = this.artifactToArtifactDtoConverter.convert(foundArtifact);
         return new Result(true, StatusCode.SUCCESS, "Find One Success", artifactDto);
+    }*/
+
+    // Replace the above method with a more functional programming style using Stream API
+    @GetMapping("/{artifactId}")
+    public Result findArtifactById(@PathVariable String artifactId) {
+        return Stream.of(artifactId)
+                .map(this.artifactService::findById)
+                .map(this.artifactToArtifactDtoConverter::convert)
+                .map(artifactDto -> new Result(true, StatusCode.SUCCESS, "Find One Success", artifactDto))
+                .findFirst()
+                .orElseThrow();
     }
+
+
+
 
     @GetMapping
     public Result findAllArtifacts(){
@@ -44,7 +61,7 @@ public class ArtifactController {
                 .collect(Collectors.toList());
         return new Result(true, StatusCode.SUCCESS, "Find All Success", artifactDtos);
     }
-
+/**
     @PostMapping
     public Result addArtifact(@Valid @RequestBody ArtifactDto artifactDto){
         // Convert artifactDto to artifact
@@ -52,15 +69,46 @@ public class ArtifactController {
         Artifact savedArtifact = this.artifactService.save(newArtifact);
         ArtifactDto savedArtifactDto = this.artifactToArtifactDtoConverter.convert(savedArtifact);
         return new Result(true, StatusCode.SUCCESS, "Add Success", savedArtifactDto) ;
-    }
+    }*/
 
-    @PutMapping("/{artifactId}")
+// Convert the above method to a more functional programming style using Stream API
+    @PostMapping
+    public Result addArtifact(@Valid @RequestBody ArtifactDto artifactDto)
+        {
+        return Stream.of(artifactDto)
+                .map(this.artifactDtoToArtifactConverter::convert)
+                .filter(Objects::nonNull)
+                .map(this.artifactService::save)
+                .map(this.artifactToArtifactDtoConverter::convert)
+                .map(savedArtifactDto -> new Result(true, StatusCode.SUCCESS, "Add Success", savedArtifactDto))
+                .findFirst()
+                .orElseThrow();
+       }
+
+
+
+
+   /** @PutMapping("/{artifactId}")
     public Result updateArtifact(@PathVariable String artifactId, @Valid @RequestBody ArtifactDto artifactDto){
         Artifact update = this.artifactDtoToArtifactConverter.convert(artifactDto);
         Artifact updatedArtifact = this.artifactService.update(artifactId, update);
         ArtifactDto updatedArtifactDto = this.artifactToArtifactDtoConverter.convert(updatedArtifact);
         return new Result(true, StatusCode.SUCCESS, "Update Success", updatedArtifactDto);
+    }*/
+
+    @PutMapping("/{artifactId}")
+    public Result updateArtifact(@PathVariable String artifactId, @Valid @RequestBody ArtifactDto artifactDto)
+    {
+        return Stream.of(artifactDto)
+                .map(this.artifactDtoToArtifactConverter::convert)
+                .map(artifact -> this.artifactService.update(artifactId, artifact))
+                .map(this.artifactToArtifactDtoConverter::convert)
+                .map(updatedArtifactDto -> new Result(true, StatusCode.SUCCESS, "Update Success", updatedArtifactDto))
+                .findFirst()
+                .orElseThrow();
     }
+
+
 
     @DeleteMapping("/{artifactId}")
     public Result deleteArtifact(@PathVariable String artifactId){

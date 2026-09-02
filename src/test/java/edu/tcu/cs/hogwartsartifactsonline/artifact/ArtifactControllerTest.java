@@ -95,8 +95,12 @@ class ArtifactControllerTest {
 
     @Test
     void tesFindArtifactByIdSuccess() throws Exception {
-        // Given
-        given(this.artifactService.findById("1250808601744904191")).willReturn(this.artifacts.get(0));
+        /**
+         Given - the artifactService.findById method is called with the id "1250808601744904191",
+                 it will return the first artifact in the artifacts list.
+         */
+        given(this.artifactService.findById("1250808601744904191"))
+                .willReturn(this.artifacts.get(0));
 
         // When and then
         this.mockMvc.perform(get("/api/v1/artifacts/1250808601744904191").accept(MediaType.APPLICATION_JSON))
@@ -110,7 +114,8 @@ class ArtifactControllerTest {
     @Test
     void tesFindArtifactByIdNotFound() throws Exception {
         // Given
-        given(this.artifactService.findById("1250808601744904191")).willThrow(new ArtifactNotFoundException("1250808601744904191"));
+        given(this.artifactService.findById("1250808601744904191"))
+                .willThrow(new ArtifactNotFoundException("1250808601744904191"));
 
         // When and then
         this.mockMvc.perform(get("/api/v1/artifacts/1250808601744904191").accept(MediaType.APPLICATION_JSON))

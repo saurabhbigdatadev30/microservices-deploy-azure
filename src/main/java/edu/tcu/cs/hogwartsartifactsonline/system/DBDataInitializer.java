@@ -20,6 +20,14 @@ public class DBDataInitializer implements CommandLineRunner {
         this.wizardRepository = wizardRepository;
     }
 
+    /**
+        ## Relationship between Wizard and Artifact: - Similar to [Department and Employee]
+        i.e A department can have many employees, but each employee can only belong to one department.
+        In our case :-
+          -  One wizard can own many artifacts, but each artifact can only be owned by one wizard.
+          -  This is a one-to-many relationship between Wizard and Artifact.
+
+     */
     @Override
     public void run(String... args) throws Exception {
         Artifact a1 = new Artifact();
@@ -58,28 +66,52 @@ public class DBDataInitializer implements CommandLineRunner {
         a6.setDescription("The Resurrection Stone allows the holder to bring back deceased loved ones, in a semi-physical form, and communicate with them.");
         a6.setImageUrl("ImageUrl");
 
+        Artifact a7 = new Artifact();
+        a7.setId("1234567890123456789");
+        a7.setName("Resurrection Stone");
+        a7.setDescription("xxxx");
+        a7.setImageUrl("ImageUrl");
+
+
         Wizard w1 = new Wizard();
         w1.setId(1);
         w1.setName("Albus Dumbledore");
+        // Set the relationship between Wizard (Department) and Artifact (Employee)
         w1.addArtifact(a1);
         w1.addArtifact(a3);
 
         Wizard w2 = new Wizard();
         w2.setId(2);
         w2.setName("Harry Potter");
+        // Set the relationship between Wizard (Department) and Artifact (Employee)
         w2.addArtifact(a2);
         w2.addArtifact(a4);
 
         Wizard w3 = new Wizard();
         w3.setId(3);
         w3.setName("Neville Longbottom");
+        // Set the relationship between Wizard (Department) and Artifact (Employee)
         w3.addArtifact(a5);
+        w3.addArtifact(a6);
 
+        /**
+           In the Wizard class , we have defined a one-to-many relationship with the Artifact class using the
+           @OneToMany annotation. The cascade attribute is set to {CascadeType.PERSIST, CascadeType.MERGE},
+           which means that when we save or update a Wizard entity, it will also save or update the
+           associated Artifact entities.
+
+          @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner")
+          List<Artifact> artifacts = new ArrayList<>();
+
+          Since in the entity class Wizard, we have set the cascade type to PERSIST and MERGE,
+          when we save the wizard, it will also save the associated artifacts.
+         */
         wizardRepository.save(w1);
         wizardRepository.save(w2);
         wizardRepository.save(w3);
 
-        artifactRepository.save(a6);
+       // a7 is not associated with any wizard, so we need to save it separately
+        artifactRepository.save(a7);
     }
 
 }

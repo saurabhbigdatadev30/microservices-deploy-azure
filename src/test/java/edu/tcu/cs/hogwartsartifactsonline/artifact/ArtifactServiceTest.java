@@ -24,17 +24,25 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ArtifactServiceTest {
 
+    // Don't call the real ArtifactRepository, instead call the mock ArtifactRepository
     @Mock
     ArtifactRepository artifactRepository;
 
+    // Don't call the real IdWorker, instead call the mock IdWorker
     @Mock
     IdWorker idWorker;
 
+    /**
+           @InjectMocks :-  is used to create an instance of the class and inject the mocks
+                            that are marked with the @Mock annotation into it.
+
+          -   Mocks ArtifactRepository into ArtifactService so that when ArtifactService calls methods
+              on ArtifactRepository, it will be calling the mocked methods instead of the real ones.
+     */
     @InjectMocks
     ArtifactService artifactService;
 
     List<Artifact> artifacts;
-
 
     @BeforeEach
     void setUp() {
@@ -61,13 +69,7 @@ class ArtifactServiceTest {
 
     @Test
     void testFindByIdSuccess() {
-        // Given. Arrange inputs and targets. Define the behavior of Mock object artifactRepository.
-        /*
-        "id": "1250808601744904192",
-        "name": "Invisibility Cloak",
-        "description": "An invisibility cloak is used to make the wearer invisible.",
-        "imageUrl": "ImageUrl",
-         */
+
         Artifact a = new Artifact();
         a.setId("1250808601744904192");
         a.setName("Invisibility Cloak");
@@ -78,20 +80,27 @@ class ArtifactServiceTest {
         w.setId(2);
         w.setName("Harry Potter");
 
+        // Set the relationship between Wizard (Department) and Artifact (Employee)
         a.setOwner(w);
 
-        given(artifactRepository.findById("1250808601744904192")).willReturn(Optional.of(a)); // Defines the behavior of the mock object.
+        /**
+         this.artifacts = new ArrayList<>();
+         this.artifacts.add(a);
+         w.setArtifactList(artifacts);
+         */
 
-        // When. Act on the target behavior. When steps should cover the method to be tested.
+        // When artifactService calls artifactRepository.findById("1250808601744904192"), it will return Optional.of(a)
+        given(artifactRepository.findById("1250808601744904192")).willReturn(Optional.of(a));
+
+        // When :- Call the method under test. This is the action that we are testing.
         Artifact returnedArtifact = artifactService.findById("1250808601744904192");
 
-        // Then. Assert expected outcomes.
+        // Compare the service returned with repository returned (mocked)
         assertThat(returnedArtifact.getId()).isEqualTo(a.getId());
         assertThat(returnedArtifact.getName()).isEqualTo(a.getName());
         assertThat(returnedArtifact.getDescription()).isEqualTo(a.getDescription());
         assertThat(returnedArtifact.getImageUrl()).isEqualTo(a.getImageUrl());
         verify(artifactRepository, times(1)).findById("1250808601744904192");
-
     }
 
     @Test
@@ -99,15 +108,26 @@ class ArtifactServiceTest {
         // Given
         given(artifactRepository.findById(Mockito.any(String.class))).willReturn(Optional.empty());
 
-        // When
+        /**
+          TODO - We need to catch the exception thrown by artifactService.findById("1250808601744904192")
+                 so that we can assert on it.
+
+           - catchThrowable(...) is a HOF ... It accepts the lambda () -> { ... }
+           - Implements the call() method of the @Functional Interface ThrowingCallable interface, which is a
+              functional interface that  can be used to represent a block of code that can throw an exception.
+
+              If artifactService.findById("1250808601744904192") throws Exception, catchThrowable will catch it
+              and return it in the thrown variable. If no exception is thrown, catchThrowable will return null.
+         */
         Throwable thrown = catchThrowable(() -> {
             Artifact returnedArtifact = artifactService.findById("1250808601744904192");
         });
 
-        // Then
+        // Check that the exception is of type ArtifactNotFoundException and has the expected message
         assertThat(thrown)
                 .isInstanceOf(ArtifactNotFoundException.class)
                 .hasMessage("Could not find artifact with Id 1250808601744904192 :(");
+
         verify(artifactRepository, times(1)).findById("1250808601744904192");
     }
 
