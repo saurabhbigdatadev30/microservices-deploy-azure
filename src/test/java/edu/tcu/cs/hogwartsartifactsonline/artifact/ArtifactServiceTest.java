@@ -58,6 +58,12 @@ class ArtifactServiceTest {
         a2.setDescription("An invisibility cloak is used to make the wearer invisible.");
         a2.setImageUrl("imageUrl");
 
+        Artifact a3 = new Artifact();
+        a3.setId("1250808601744904193");
+        a3.setName("Elder Wand");
+        a3.setDescription("The Elder Wand is one of the three Deathly Hallows. It is said to be the most powerful wand in existence.");
+        a3.setImageUrl("imageUrl");
+
         this.artifacts = new ArrayList<>();
         this.artifacts.add(a1);
         this.artifacts.add(a2);
