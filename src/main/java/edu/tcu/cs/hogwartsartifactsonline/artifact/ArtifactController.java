@@ -24,14 +24,17 @@ public class ArtifactController {
     private final ArtifactDtoToArtifactConverter artifactDtoToArtifactConverter;
 
 
-    public ArtifactController(ArtifactService artifactService, ArtifactToArtifactDtoConverter artifactToArtifactDtoConverter, ArtifactDtoToArtifactConverter artifactDtoToArtifactConverter) {
+    public ArtifactController(ArtifactService artifactService,
+                              ArtifactToArtifactDtoConverter artifactToArtifactDtoConverter,
+                              ArtifactDtoToArtifactConverter artifactDtoToArtifactConverter)
+    {
         this.artifactService = artifactService;
         this.artifactToArtifactDtoConverter = artifactToArtifactDtoConverter;
         this.artifactDtoToArtifactConverter = artifactDtoToArtifactConverter;
     }
 
    /**
-      @GetMapping("/{artifactId}")
+      @GetMapping("/{artifactId}")   We replace this with functional style using Stream API below
     public Result findArtifactById(@PathVariable String artifactId){
         Artifact foundArtifact = this.artifactService.findById(artifactId);
         ArtifactDto artifactDto = this.artifactToArtifactDtoConverter.convert(foundArtifact);
@@ -48,9 +51,6 @@ public class ArtifactController {
                 .findFirst()
                 .orElseThrow();
     }
-
-
-
 
     @GetMapping
     public Result findAllArtifacts(){

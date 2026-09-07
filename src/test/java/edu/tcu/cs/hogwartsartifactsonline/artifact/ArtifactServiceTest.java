@@ -21,10 +21,19 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+/**
+ #### ArtifactServiceTest is a unit test class for the ArtifactService class
+  - It uses Mockito to mock the dependencies of ArtifactService, allowing us to test the service
+    in isolation.
+  - All the dependencies of ArtifactService are mocked, so we can control their behavior and verify
+    interactions with them.
+  - We mock the ArtifactRepository and IdWorker, which are dependencies of ArtifactService.
+
+ */
 @ExtendWith(MockitoExtension.class)
 class ArtifactServiceTest {
 
-    // Don't call the real ArtifactRepository, instead call the mock ArtifactRepository
+    // Don't call the real ArtifactRepository , instead call the mock ArtifactRepository
     @Mock
     ArtifactRepository artifactRepository;
 
@@ -67,6 +76,7 @@ class ArtifactServiceTest {
         this.artifacts = new ArrayList<>();
         this.artifacts.add(a1);
         this.artifacts.add(a2);
+        this.artifacts.add(a3);
     }
 
     @AfterEach
@@ -82,11 +92,17 @@ class ArtifactServiceTest {
         a.setDescription("An invisibility cloak is used to make the wearer invisible.");
         a.setImageUrl("ImageUrl");
 
+        // One-to-Many relationship between Wizard and Artifact i.e A Wizard (Department) can have many Artifacts (Employees)
         Wizard w = new Wizard();
         w.setId(2);
         w.setName("Harry Potter");
 
-        // Set the relationship between Wizard (Department) and Artifact (Employee)
+  /**
+      Set the relationship between Wizard (Department) and Artifact (Employee)
+       - The Wizard w is the owner of the Artifact a, so we set the owner of a to be w.
+       - This establishes the relationship between the two entities.
+    */
+
         a.setOwner(w);
 
         /**
@@ -111,19 +127,23 @@ class ArtifactServiceTest {
 
     @Test
     void testFindByIdNotFound() {
-        // Given
+        /**
+           Given any id passed to artifactRepository.findById will return Optional.empty() to simulate
+           not found*
+           */
         given(artifactRepository.findById(Mockito.any(String.class))).willReturn(Optional.empty());
 
         /**
           TODO - We need to catch the exception thrown by artifactService.findById("1250808601744904192")
                  so that we can assert on it.
 
-           - catchThrowable(...) is a HOF ... It accepts the lambda () -> { ... }
+           - catchThrowable(...) is a HOF . It accepts  lambda function as input arg :-  (() -> { ... })
            - Implements the call() method of the @Functional Interface ThrowingCallable interface, which is a
               functional interface that  can be used to represent a block of code that can throw an exception.
 
               If artifactService.findById("1250808601744904192") throws Exception, catchThrowable will catch it
-              and return it in the thrown variable. If no exception is thrown, catchThrowable will return null.
+              and return it in the "thrown" variable.
+              If no exception is thrown, catchThrowable will return null.
          */
         Throwable thrown = catchThrowable(() -> {
             Artifact returnedArtifact = artifactService.findById("1250808601744904192");

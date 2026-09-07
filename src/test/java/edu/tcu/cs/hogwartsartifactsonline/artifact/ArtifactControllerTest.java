@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +26,32 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class ArtifactControllerTest {
 
+    /**
+         We use @Autowired to inject the MockMvc instance into the test class.
+         MockMvc is a Spring MVC testing framework that allows us to perform HTTP requests and assertions on the
+         responses without starting a full web server.
+     */
     @Autowired
     MockMvc mockMvc;
 
+    /**
+       We use @MockBean to create a mock of the ArtifactService class and inject it into the Spring application context.
+       This allows us to control the behavior of the ArtifactService during testing, without needing to rely on
+        the actual implementation.
+
+       ###  @Mock vs @MockBean:
+         @Mock is a Mockito annotation that creates a mock object for unit testing. It is typically used in conjunction
+        with @InjectMocks to inject the mock into the class under test.
+
+        @MockBean is a Spring Boot annotation that creates a mock bean and adds it to the Spring application context.
+     */
     @MockBean
     ArtifactService artifactService;
 
@@ -102,8 +120,16 @@ class ArtifactControllerTest {
         given(this.artifactService.findById("1250808601744904191"))
                 .willReturn(this.artifacts.get(0));
 
-        // When and then
-        this.mockMvc.perform(get("/api/v1/artifacts/1250808601744904191").accept(MediaType.APPLICATION_JSON))
+         /**
+             Using MockMvc to perform a GET request to the endpoint "/api/v1/artifacts/1250808601744904191" and
+             assert the response.
+              1. When and then combined - perform a GET request to the endpoint and assert the response
+              2. The JSON response is validated using jsonPath to check the values of the flag, code, message,
+                 and data fields.
+           */
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/artifacts/1250808601744904191")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find One Success"))
@@ -113,12 +139,16 @@ class ArtifactControllerTest {
 
     @Test
     void tesFindArtifactByIdNotFound() throws Exception {
-        // Given
+        /*
+         Given - the artifactService.findById method is called with the id "1250808601744904191",
+         it will throw an ArtifactNotFoundException.
+         */
         given(this.artifactService.findById("1250808601744904191"))
                 .willThrow(new ArtifactNotFoundException("1250808601744904191"));
 
         // When and then
-        this.mockMvc.perform(get("/api/v1/artifacts/1250808601744904191").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/artifacts/1250808601744904191").accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find artifact with Id 1250808601744904191 :("))

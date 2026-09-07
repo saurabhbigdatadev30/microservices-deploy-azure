@@ -21,6 +21,7 @@ public class ArtifactService {
     }
 
     public Artifact findById(String artifactId) {
+        // Mock it to return Optional.empty() to test the exception handling , when the artifact is not found in the database.
         return this.artifactRepository.findById(artifactId)
                 .orElseThrow(() -> new ArtifactNotFoundException(artifactId));
     }
