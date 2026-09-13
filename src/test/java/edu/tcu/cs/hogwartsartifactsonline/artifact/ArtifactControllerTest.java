@@ -29,6 +29,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+/**
+  @SpringBootTest:  Loads the full application context for Integration testing i.e
+  provides embedded server and all beans in the context.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class ArtifactControllerTest {
