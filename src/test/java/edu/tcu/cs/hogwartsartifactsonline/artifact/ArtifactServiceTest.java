@@ -2,6 +2,7 @@ package edu.tcu.cs.hogwartsartifactsonline.artifact;
 
 import edu.tcu.cs.hogwartsartifactsonline.artifact.utils.IdWorker;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.Wizard;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -92,7 +92,10 @@ class ArtifactServiceTest {
         a.setDescription("An invisibility cloak is used to make the wearer invisible.");
         a.setImageUrl("ImageUrl");
 
-        // One-to-Many relationship between Wizard and Artifact i.e A Wizard (Department) can have many Artifacts (Employees)
+       /**
+        One-to-Many relationship between Wizard and Artifact
+        A Wizard (Department) can have many Artifacts (Employees)
+        */
         Wizard w = new Wizard();
         w.setId(2);
         w.setName("Harry Potter");
@@ -103,7 +106,7 @@ class ArtifactServiceTest {
        - This establishes the relationship between the two entities.
     */
 
-        a.setOwner(w);
+        a.setWizard(w);
 
         /**
          this.artifacts = new ArrayList<>();
@@ -137,15 +140,12 @@ class ArtifactServiceTest {
           TODO - We need to catch the exception thrown by artifactService.findById("1250808601744904192")
                  so that we can assert on it.
 
-           - catchThrowable(...) is a HOF . It accepts  lambda function as input arg :-  (() -> { ... })
-           - Implements the call() method of the @Functional Interface ThrowingCallable interface, which is a
-              functional interface that  can be used to represent a block of code that can throw an exception.
+         - cathThrowable(...) in a HOF. It accepts argument - ThrowingCallable, which is a @Functional
+           interface with a single method call(). The lambda function is an implementation of the
+           call() method.
 
-              If artifactService.findById("1250808601744904192") throws Exception, catchThrowable will catch it
-              and return it in the "thrown" variable.
-              If no exception is thrown, catchThrowable will return null.
          */
-        Throwable thrown = catchThrowable(() -> {
+        Throwable thrown = Assertions.catchThrowable(() -> {
             Artifact returnedArtifact = artifactService.findById("1250808601744904192");
         });
 

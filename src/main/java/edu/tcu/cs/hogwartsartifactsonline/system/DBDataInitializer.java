@@ -21,7 +21,7 @@ public class DBDataInitializer implements CommandLineRunner {
     }
 
     /**
-        ## Relationship between Wizard and Artifact: - Similar to [Department and Employee]
+        ## Relationship between [Wizard : Artifact] . This is Similar to [Department : Employee]
         i.e A department can have many employees, but each employee can only belong to one department.
         In our case :-
           -  One wizard can own many artifacts, but each artifact can only be owned by one wizard.

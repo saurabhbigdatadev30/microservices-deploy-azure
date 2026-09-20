@@ -21,8 +21,8 @@ public class ArtifactToArtifactDtoConverter implements Converter<Artifact, Artif
                                                     source.getName(),
                                                     source.getDescription(),
                                                     source.getImageUrl(),
-                                                    source.getOwner() != null
-                                                            ? this.wizardToWizardDtoConverter.convert(source.getOwner())
+                                                    source.getWizard() != null
+                                                            ? this.wizardToWizardDtoConverter.convert(source.getWizard())
                                                             : null);
         return artifactDto;
     }

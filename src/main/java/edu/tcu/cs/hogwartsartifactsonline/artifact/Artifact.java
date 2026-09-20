@@ -7,6 +7,8 @@ import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
 
+
+
 @Entity
 public class Artifact implements Serializable {
 
@@ -16,8 +18,9 @@ public class Artifact implements Serializable {
     private String description;
     private String imageUrl;
 
+    // is the side that controls the wizard_id foreign key.
     @ManyToOne
-    private Wizard owner;
+    private Wizard wizard;
 
 
     public Artifact() {
@@ -55,12 +58,12 @@ public class Artifact implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public Wizard getOwner() {
-        return owner;
+    public Wizard getWizard() {
+        return wizard;
     }
 
-    public void setOwner(Wizard owner) {
-        this.owner = owner;
+    public void setWizard(Wizard wizard) {
+        this.wizard = wizard;
     }
 
 }
