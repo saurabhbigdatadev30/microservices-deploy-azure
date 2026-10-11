@@ -41,7 +41,8 @@ public class ArtifactController {
     return Stream.of(artifactId)
             .map(this.artifactService::findById)
             .map(this.artifactToArtifactDtoConverter::convert)
-            .map(artifactDto -> new Result(true, StatusCode.SUCCESS, "Find One Success", artifactDto))
+            .map(artifactDto -> new Result(true, StatusCode.SUCCESS, "Find One Success",
+                    artifactDto))
             .findFirst().get();
 
 }

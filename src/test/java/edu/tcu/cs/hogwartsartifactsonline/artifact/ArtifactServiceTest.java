@@ -96,7 +96,10 @@ class ArtifactServiceTest {
         Wizard w = new Wizard();
         w.setId(2);
         w.setName("Harry Potter");
-       // Set the relationship between artifact and wizard , so that artifact.wizard is the owning side of the relationship.
+
+      /**
+        Set the relationship between artifact and wizard , so that artifact.wizard is the owning side of
+         the relationship.*/
         a.setWizard(w);
 
 
@@ -121,7 +124,7 @@ class ArtifactServiceTest {
     void testFindByIdNotFound() {
         /**
            Given any id passed to artifactRepository.findById will return Optional.empty() to simulate
-           not found*
+           not found behavior *
            */
         given(artifactRepository.findById(Mockito.any(String.class))).willReturn(Optional.empty());
 
@@ -130,8 +133,16 @@ class ArtifactServiceTest {
                  so that we can assert on it.
 
          - cathThrowable(...) in a HOF. It accepts argument - ThrowingCallable, which is a @Functional
-           interface with a single method call(). The lambda function is an implementation of the
+           interface which has  a single method call(). The lambda function is an implementation of the
            call() method.
+
+           public static Throwable catchThrowable(ThrowingCallable shouldRaiseThrowable) {
+              .......
+            }
+               @FunctionalInterface
+                public interface ThrowingCallable {
+                 void call() throws Throwable;
+                }
 
          */
         Throwable thrown = Assertions.catchThrowable(() -> {
