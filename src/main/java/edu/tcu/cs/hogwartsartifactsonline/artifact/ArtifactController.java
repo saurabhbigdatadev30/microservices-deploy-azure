@@ -33,13 +33,6 @@ public class ArtifactController {
         this.artifactDtoToArtifactConverter = artifactDtoToArtifactConverter;
     }
 
-   /**
-      @GetMapping("/{artifactId}")   We replace this with functional style using Stream API below
-    public Result findArtifactById(@PathVariable String artifactId){
-        Artifact foundArtifact = this.artifactService.findById(artifactId);
-        ArtifactDto artifactDto = this.artifactToArtifactDtoConverter.convert(foundArtifact);
-        return new Result(true, StatusCode.SUCCESS, "Find One Success", artifactDto);
-    }*/
 
 
    // @GetMapping("/api/v1/artifacts/{artifactId}") :: @PathVariable("artifactId") String artifactId
@@ -50,6 +43,17 @@ public class ArtifactController {
             .map(this.artifactToArtifactDtoConverter::convert)
             .map(artifactDto -> new Result(true, StatusCode.SUCCESS, "Find One Success", artifactDto))
             .findFirst().get();
+
+}
+
+@GetMapping("/api/v1/artifacts/{artifactId}")
+public Result fetchArtifactByArtifactId(@PathVariable String artifactId) {
+        return Stream.of(artifactId)    // Returns Stream<String>
+                .map(this.artifactService::findById)
+                .map(this.artifactToArtifactDtoConverter::convert)
+                .map(dto -> new Result(true, StatusCode.SUCCESS, "Find One Success", dto))
+                .findFirst()
+                .orElseThrow(); // throws NoSuchElementException if no value is present
 
 }
 

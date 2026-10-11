@@ -1,5 +1,6 @@
 # hogwarts-artifacts-online
-https://app.swaggerhub.com/apis/Washingtonwei/hogwarts-openapi/1.0.0#/artifact/findAllArtifacts
+# Swagger API for Hogwarts Artifacts Online 
+# https://app.swaggerhub.com/apis/Washingtonwei/hogwarts-openapi/1.0.0
 
 # ## Build the project Maven - Lifecycle - package . 
 This builds the project and creates a JAR file in the target directory. 

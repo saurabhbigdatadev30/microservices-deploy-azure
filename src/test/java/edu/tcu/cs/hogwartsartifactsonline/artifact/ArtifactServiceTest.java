@@ -42,11 +42,8 @@ class ArtifactServiceTest {
     IdWorker idWorker;
 
     /**
-           @InjectMocks :-  is used to create an instance of the class and inject the mocks
-                            that are marked with the @Mock annotation into it.
-
-          -   Mocks ArtifactRepository into ArtifactService so that when ArtifactService calls methods
-              on ArtifactRepository, it will be calling the mocked methods instead of the real ones.
+           InjectMocks :-  To inject the mock dependencies into the  specified instance.
+              - It injects the mocks (ArtifactRepository and IdWorker)  into ArtifactService.
      */
     @InjectMocks
     ArtifactService artifactService;
@@ -85,7 +82,6 @@ class ArtifactServiceTest {
 
     @Test
     void testFindByIdSuccess() {
-
         Artifact a = new Artifact();
         a.setId("1250808601744904192");
         a.setName("Invisibility Cloak");
@@ -93,34 +89,27 @@ class ArtifactServiceTest {
         a.setImageUrl("ImageUrl");
 
        /**
-        One-to-Many relationship between Wizard and Artifact
-        A Wizard (Department) can have many Artifacts (Employees)
+         One-to-Many relationship between Wizard [Department] and Artifact [Employee]
+         - A Wizard (Department) instance  can have many Artifacts (Employees) instances,
+           but each Artifact (Employee) instance can only belong to one Wizard (Department) instance.
         */
         Wizard w = new Wizard();
         w.setId(2);
         w.setName("Harry Potter");
-
-  /**
-      Set the relationship between Wizard (Department) and Artifact (Employee)
-       - The Wizard w is the owner of the Artifact a, so we set the owner of a to be w.
-       - This establishes the relationship between the two entities.
-    */
-
+       // Set the relationship between artifact and wizard , so that artifact.wizard is the owning side of the relationship.
         a.setWizard(w);
 
-        /**
-         this.artifacts = new ArrayList<>();
-         this.artifacts.add(a);
-         w.setArtifactList(artifacts);
-         */
 
-        // When artifactService calls artifactRepository.findById("1250808601744904192"), it will return Optional.of(a)
+        // 1. When artifactService calls artifactRepository.findById("1250808601744904192"), it will return Optional.of(a)
         given(artifactRepository.findById("1250808601744904192")).willReturn(Optional.of(a));
 
-        // When :- Call the method under test. This is the action that we are testing.
+        // 2. When :- Call the method under test. This is the action that we are testing.
         Artifact returnedArtifact = artifactService.findById("1250808601744904192");
 
-        // Compare the service returned with repository returned (mocked)
+        /*3.
+             Assert/Compare the service returned with repository returned (mocked)
+             We compare the returned instance with the mocked instance to ensure that the service is returning
+             the correct data.*/
         assertThat(returnedArtifact.getId()).isEqualTo(a.getId());
         assertThat(returnedArtifact.getName()).isEqualTo(a.getName());
         assertThat(returnedArtifact.getDescription()).isEqualTo(a.getDescription());

@@ -21,7 +21,7 @@ public class ArtifactService {
     }
 
     public Artifact findById(String artifactId) {
-        return this.artifactRepository.findById(artifactId)  // We will mock this in test
+        return this.artifactRepository.findById(artifactId)  // We will mock this repository invocation in test
                 .orElseThrow(() -> new ArtifactNotFoundException(artifactId));
     }
 

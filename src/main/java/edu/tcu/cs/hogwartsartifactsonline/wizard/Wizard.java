@@ -31,10 +31,14 @@ public class Wizard implements Serializable {
     private Integer id;
     private String name;
   /**
-   one wizard can own many artifacts, but each artifact belongs to at most one wizard.
-   Artifact contains the foreign key to the Wizard table . So :-
-     - Artifact is the owner of the relationship,  we need to use mappedBy to tell JPA that the
-       relationship is mapped by the wizard field in the Artifact class.
+     one wizard can own many artifacts , but each artifact belongs to at most one wizard.
+   - mappedBy = "wizard" indicates that the wizard field in the [Artifact] class is the owner of the relationship.
+
+   - CascadeType.PERSIST and CascadeType.MERGE are used to propagate the persistence and merge operations from the
+      Wizard entity to the associated Artifact entities.
+
+      This means that when a Wizard is persisted or merged, the associated
+       Artifact entities will also be persisted or merged.
    */
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "wizard")
     private List<Artifact> artifactList = new ArrayList<>();

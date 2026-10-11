@@ -7,7 +7,19 @@ import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
 
+/**
+  Understanding of @ManyToOne Relationship :-  [Employee] and [Department]
 
+      Many employee instances belong to the same Department instance
+         - [emp1,emp2,emp3] instances belong to  [HR department] .
+         - [emp5,emp6] instances belong to  [Software Development  department] .
+         - [emp7,emp8,emp9] instances belong to  [Finance department] .
+
+         Employee Entity is the owner of the relationship because Employee table contains the
+         foreign key to the Department table.
+
+    Similarly, here many Artifact instances i.e (Employees) can belong to one Wizard i.e (Department) ,
+ */
 
 @Entity
 public class Artifact implements Serializable {
@@ -18,10 +30,11 @@ public class Artifact implements Serializable {
     private String description;
     private String imageUrl;
 
-    // is the side that controls the wizard_id foreign key.
+     /**
+        ManyToOne relationship between Artifact i.e [Employee] and Wizard i.e [Department]
+        - Many artifacts [Employee]  can belong to one wizard [Department].*/
     @ManyToOne
     private Wizard wizard;
-
 
     public Artifact() {
     }
